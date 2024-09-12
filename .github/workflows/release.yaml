@@ -46,8 +46,10 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
-        draft: true
+        draft: false
         prerelease: false
+        body: |
+          See [the official changelog](https://changelog.cursor.sh/).
         
     - name: Upload Release Assets
       uses: softprops/action-gh-release@v1
