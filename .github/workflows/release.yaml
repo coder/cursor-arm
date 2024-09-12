@@ -1,0 +1,57 @@
+name: release
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: linux-arm64
+    steps:
+    - uses: actions/checkout@v3
+    
+    - uses: DeterminateSystems/nix-installer-action@main
+    - uses: DeterminateSystems/magic-nix-cache-action@main
+      
+    - name: Build Linux ARM64
+      run: |
+        mkdir -p artifacts
+        nix build .#cursor.linux.arm64-targz
+        cp result/* artifacts/
+        nix build .#cursor.linux.arm64-appimage
+        cp result/* artifacts/
+        
+    - name: Build Linux ARM32
+      run: |
+        nix build .#cursor.linux.arm32-targz
+        cp result/* artifacts/
+        nix build .#cursor.linux.arm32-appimage
+        cp result/* artifacts/
+        
+    - name: Build Windows ARM64
+      run: |
+        nix build .#cursor.windows.arm64-zip
+        cp result/* artifacts/
+        
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: true
+        prerelease: false
+        
+    - name: Upload Release Assets
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ./artifacts/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

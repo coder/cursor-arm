@@ -55,6 +55,8 @@
             cp -R ${cursorSrc}/resources/app/resources ${root}/resources/app/
           '';
 
+          artifactName = os: arch: ext: "cursor_${cursorVersion}_${os}_${arch}.${ext}";
+
           # Overrides the VS Code package with Cursor's resources.
           buildCursorNix = { vscodePackage }:
             vscodePackage.overrideAttrs (oldAttrs: {
@@ -129,21 +131,21 @@
                 name = "linux-arm64";
               };
               arm64-appimage = pkgs.stdenv.mkDerivation {
-                name = "cursor-linux-arm64-appimage";
+                name = artifactName "linux" "arm64" "AppImage";
                 src = self.packages.${system}.cursor.linux.arm64;
                 dontPatchShebangs = true;
                 buildInputs = [ pkgs.appimagekit ];
                 buildPhase = ''
                   mkdir -p $out
-                  ARCH=arm_aarch64 appimagetool $src $out/cursor.AppImage
-                  chmod +x $out/cursor.AppImage
-                  patchelf --set-interpreter /lib/ld-linux-aarch64.so.1 $out/cursor.AppImage
+                  ARCH=arm_aarch64 appimagetool $src $out/${artifactName "linux" "arm64" "AppImage"}
+                  chmod +x $out/${artifactName "linux" "arm64" "AppImage"}
+                  patchelf --set-interpreter /lib/ld-linux-aarch64.so.1 $out/${artifactName "linux" "arm64" "AppImage"}
                 '';
               };
               arm64-targz = pkgs.runCommand "tarball" { } ''
                 mkdir -p $out
                 cd ${self.packages.${system}.cursor.linux.arm64}
-                ${pkgs.gnutar}/bin/tar -czvf $out/cursor-linux-arm64-${cursorVersion}.tar.gz .
+                ${pkgs.gnutar}/bin/tar -czvf $out/${artifactName "linux" "arm64" "tar.gz"} .
               '';
 
               arm32 = buildCursorPrepackaged {
@@ -151,21 +153,21 @@
                 name = "linux-arm32";
               };
               arm32-appimage = pkgs.stdenv.mkDerivation {
-                name = "cursor-linux-arm32-appimage";
+                name = artifactName "linux" "arm32" "AppImage";
                 src = self.packages.${system}.cursor.linux.arm32;
                 dontPatchShebangs = true;
                 buildInputs = [ pkgs.appimagekit ];
                 buildPhase = ''
                   mkdir -p $out
-                  ARCH=arm appimagetool $src $out/cursor.AppImage
-                  chmod +x $out/cursor.AppImage
-                  patchelf --set-interpreter /lib/ld-linux.so.3 $out/cursor.AppImage
+                  ARCH=arm appimagetool $src $out/${artifactName "linux" "arm32" "AppImage"}
+                  chmod +x $out/${artifactName "linux" "arm32" "AppImage"}
+                  patchelf --set-interpreter /lib/ld-linux.so.3 $out/${artifactName "linux" "arm32" "AppImage"}
                 '';
               };
               arm32-targz = pkgs.runCommand "tarball" { } ''
                 mkdir -p $out
                 cd ${self.packages.${system}.cursor.linux.arm32}
-                ${pkgs.gnutar}/bin/tar -czvf $out/cursor-linux-arm32-${cursorVersion}.tar.gz .
+                ${pkgs.gnutar}/bin/tar -czvf $out/${artifactName "linux" "arm32" "tar.gz"} .
               '';
             };
             windows = {
@@ -174,6 +176,11 @@
                 name = "windows-arm64";
                 isWindows = true;
               };
+              arm64-zip = pkgs.runCommand "zip" { } ''
+                mkdir -p $out
+                cd ${self.packages.${system}.cursor.windows.arm64}
+                ${pkgs.zip}/bin/zip -r $out/${artifactName "windows" "arm64" "zip"} .
+              '';
             };
 
             nix = buildCursorNix {
