@@ -62,6 +62,7 @@
             vscodePackage.overrideAttrs (oldAttrs: {
               pname = "cursor";
               version = cursorVersion;
+              executableName = "cursor";
 
               postInstall = (oldAttrs.postInstall or "") + ''
                 ${(copyCursorFiles "$out/lib/vscode")}
@@ -77,6 +78,7 @@
 
               meta = oldAttrs.meta // {
                 description = "Cursor ${cursorVersion}";
+                mainProgram = "cursor";
               };
             });
 

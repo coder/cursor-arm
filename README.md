@@ -14,7 +14,7 @@ The official issue tracker has numerous issues ([#1532](https://github.com/getcu
 
 Download the [latest release](https://github.com/coder/cursor-arm/releases/latest) and execute it.
 
-For Nix users, simply `nix build` and run.
+For Nix users: `nix run github:coder/cursor-arm` (this should work for all architectures, not just arm).
 
 ## FAQ
 
