@@ -19,15 +19,15 @@
           # It's difficult to find pinned versions of Cursor.
           # The latest version and download URL were found here:
           # https://changelog.cursor.sh/
-          cursorVersion = "0.40";
+          cursorVersion = "0.41.0";
           # This is the VS Code version that Cursor was built on.
           vscodeVersion = "1.91.1";
 
           cursorSrc = pkgs.appimageTools.extractType2 {
             name = "cursor-appimage";
             src = pkgs.fetchurl {
-              url = "https://dl.todesktop.com/230313mzl4w4u92/linux/appimage/x64";
-              sha256 = "sha256-ZURE8UoLPw+Qo1e4xuwXgc+JSwGrgb/6nfIGXMacmSg=";
+              url = "https://dl.todesktop.com/230313mzl4w4u92/versions/${cursorVersion}/linux/appImage/x64";
+              sha256 = "sha256-TpxtlaNUKMZErsLEtoz6nBf5szXLzXNhLF/jtay5ZeM=";
             };
           };
           vscodeLinuxArm64 = builtins.fetchTarball {
@@ -127,6 +127,8 @@
           '';
 
           cursor = {
+            unpacked = cursorSrc;
+
             linux = {
               arm64 = buildCursorPrepackaged {
                 vscodeFiles = vscodeLinuxArm64;
