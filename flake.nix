@@ -74,7 +74,14 @@
                 # Rename the binary
                 mv $out/bin/code $out/bin/cursor || true
                 mv $out/bin/codium $out/bin/cursor || true
+
+                # Wrap the binary to disable no-new-privileges
+                mv $out/bin/cursor $out/bin/.cursor-wrapped
+                makeWrapper $out/bin/.cursor-wrapped $out/bin/cursor \
+                  --set NO_NEW_PRIVILEGES "0"
               '';
+
+              nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [ pkgs.makeWrapper ];
 
               meta = oldAttrs.meta // {
                 description = "Cursor ${cursorVersion}";
