@@ -50,17 +50,7 @@
             cp -R ${cursorSrc}/resources/app/*.json ${root}/resources/app/
             cp -R ${cursorSrc}/resources/app/extensions/cursor-* ${root}/resources/app/extensions/
             rm -rf "${root}/resources/app/node_modules"{,.asar}
-            
-            # Unpack the Cursor node_modules.asar
-            ${pkgs.asar}/bin/asar extract ${cursorSrc}/resources/app/node_modules.asar ${root}/resources/app/node_modules
-            # Copy the VS Code native modules into the Cursor node_modules.
-            # If we don't do this, then native modules will fail.
-            # See: https://github.com/coder/cursor-arm/issues/4
-            cp -R ${root}/resources/app/node_modules.asar.unpacked/* ${root}/resources/app/node_modules/
-            # Repackage the combined contents into a new node_modules.asar
-            ${pkgs.asar}/bin/asar pack ${root}/resources/app/node_modules ${root}/resources/app/node_modules.asar
-            rm -rf "${root}/resources/app/node_modules"{,.asar.unpacked}
-
+            cp -R ${cursorSrc}/resources/app/node_modules.asar ${root}/resources/app/
             rm -rf ${root}/resources/app/resources
             cp -R ${cursorSrc}/resources/app/resources ${root}/resources/app/
           '';
