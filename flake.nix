@@ -19,29 +19,29 @@
           # It's difficult to find pinned versions of Cursor.
           # The latest version and download URL were found here:
           # https://changelog.cursor.sh/
-          cursorVersion = "0.41.0";
+          cursorVersion = "0.42.2";
           # This is the VS Code version that Cursor was built on.
-          vscodeVersion = "1.91.1";
+          vscodeVersion = "1.93.1";
 
           cursorSrc = pkgs.appimageTools.extractType2 {
             name = "cursor-appimage";
             src = pkgs.fetchurl {
               url = "https://dl.todesktop.com/230313mzl4w4u92/versions/${cursorVersion}/linux/appImage/x64";
-              sha256 = "sha256-TpxtlaNUKMZErsLEtoz6nBf5szXLzXNhLF/jtay5ZeM=";
+              sha256 = "sha256-HDZ8i/86qZOqrsBcMbgeXGtZ5hmQfeDCqv9scBT1fak=";
             };
           };
           vscodeLinuxArm64 = builtins.fetchTarball {
             url = "https://update.code.visualstudio.com/${vscodeVersion}/linux-arm64/stable";
-            sha256 = "sha256:1rpd014rw7ccaq7vysdbf3crkmlb9gxdkdpvzghn1jcgvqd99880";
+            sha256 = "sha256:041bkfbrf1nxq1fr9745h70ky8i3jby8kgihpaf5pwp5cbvzbsnw";
           };
           vscodeLinuxArm32 = builtins.fetchTarball {
             url = "https://update.code.visualstudio.com/${vscodeVersion}/linux-armhf/stable";
-            sha256 = "sha256:0a5lygf6b7m8pj5h20dzif52radf41g3hazx4zhky370gq3xrgwd";
+            sha256 = "sha256:19lv6jk54zq8j9khb9ds819jc7x7izvamgkg7sqhaq891kjvvv4a";
           };
           vscodeWindowsArm64 = pkgs.fetchzip {
             stripRoot = false;
             url = "https://update.code.visualstudio.com/${vscodeVersion}/win32-arm64-archive/stable#file.zip";
-            sha256 = "sha256-2pAXxDyDOazfOndQzydQCzXXBHCwQ5tgrs4RyCqcslw=";
+            sha256 = "sha256-vxTGt1qT/bxwb5DXPMxUBrFPuP5xnqXEYWkQMrKEeXI=";
           };
 
           # Copies Cursor-specific resources into the VS Code package.
