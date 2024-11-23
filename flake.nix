@@ -69,7 +69,6 @@
 
                 # Replace VS Code's icon and desktop file with Cursor's
                 cp ${cursorSrc}/cursor.png $out/share/pixmaps/cursor.png
-                cp ${cursorSrc}/cursor.desktop $out/share/applications/cursor.desktop
 
                 # Rename the binary
                 mv $out/bin/code $out/bin/cursor || true
