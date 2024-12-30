@@ -24,7 +24,8 @@
           vscodeVersion = "1.93.1";
 
           cursorSrc = pkgs.appimageTools.extractType2 {
-            name = "cursor-appimage";
+            pname = "cursor-appimage";
+            version = cursorVersion;
             src = pkgs.fetchurl {
               url = "https://dl.todesktop.com/230313mzl4w4u92/versions/${cursorVersion}/linux/appImage/x64";
               sha256 = "sha256-jM2VKg9Zx4sNqWtNgdBiiV84T5KkyExi0K/7P/uiD30=";
@@ -141,7 +142,8 @@
                 name = "linux-arm64";
               };
               arm64-appimage = pkgs.stdenv.mkDerivation {
-                name = artifactName "linux" "arm64" "AppImage";
+                pname = artifactName "linux" "arm64" "AppImage";
+                version = cursorVersion;
                 src = self.packages.${system}.cursor.linux.arm64;
                 dontPatchShebangs = true;
                 buildInputs = [ pkgs.appimagekit ];
