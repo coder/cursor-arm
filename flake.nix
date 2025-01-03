@@ -4,9 +4,13 @@
   inputs = {
     # Pinned to align the version of VS Codium with Cursor's build.
     nixpkgs.url = "github:NixOS/nixpkgs/212defe037698e18fc9521dfe451779a8979844c";
+    flake-compat = {
+      url = "github:edolstra/flake-compat";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs }:
+  outputs = { self, nixpkgs, ...}:
     let
       supportedSystems = [ "aarch64-linux" "armv7l-linux" "x86_64-linux" ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
@@ -106,7 +110,7 @@
                 cp ${cursorSrc}/cursor.png $out/cursor.png
                 cp ${cursorSrc}/cursor.desktop $out/cursor.desktop
                 cp -R ${cursorSrc}/resources/todesktop* $out/resources/
-                
+
                 # This is excluded intentionally. It causes an error in console,
                 # but there's some token we must be missing?
                 # cp ${cursorSrc}/resources/app-update.yml $out/resources/
